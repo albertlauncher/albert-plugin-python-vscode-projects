@@ -8,13 +8,14 @@ from dataclasses import dataclass
 from albert import *
 
 md_iid = "3.0"
-md_version = "1.10"
+md_version = "1.11"
 md_name = "VSCode projects"
 md_description = "Open VSCode projects"
 md_url = "https://github.com/albertlauncher/albert-plugin-python-vscode-projects"
 md_license = "MIT"
 md_bin_dependencies = ["code"]
 md_authors = ["@Sharsie"]
+md_maintainers = ["@Sharsie"]
 
 @dataclass
 class Project:
