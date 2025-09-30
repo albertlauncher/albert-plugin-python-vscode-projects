@@ -7,7 +7,7 @@ from pathlib import Path
 from dataclasses import dataclass
 from albert import *
 
-md_iid = "3.0"
+md_iid = "4.0"
 md_version = "1.11"
 md_name = "VSCode projects"
 md_description = "Open VSCode projects"
@@ -73,6 +73,10 @@ class Plugin(PluginInstance, TriggerQueryHandler):
 
     # Overrides the command to open projects
     _terminalCommand = ""
+
+    @staticmethod
+    def makeIcon():
+        return makeImageIcon(Path(__file__).parent / "icon.svg")
 
     # Setting indicating whether results from the Recent list in VSCode should be searched
     @property
@@ -166,7 +170,6 @@ class Plugin(PluginInstance, TriggerQueryHandler):
         return "project name or path"
 
     def __init__(self):
-        self.iconUrls = [f"file:{Path(__file__).parent}/icon.svg"]
 
         PluginInstance.__init__(self)
 
@@ -359,7 +362,7 @@ Usecase with single VSCode instance - To reuse the VSCode window instead of open
             id=project.path,
             text=project.displayName,
             subtext=f"{subtext}{project.path}",
-            iconUrls=self.iconUrls,
+            iconFactory=Plugin.makeIcon,
             inputActionText=project.displayName,
             actions=actions,
         )
