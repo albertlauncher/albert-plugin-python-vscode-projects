@@ -362,8 +362,8 @@ Usecase with single VSCode instance - To reuse the VSCode window instead of open
             id=project.path,
             text=project.displayName,
             subtext=f"{subtext}{project.path}",
-            iconFactory=Plugin.makeIcon,
-            inputActionText=project.displayName,
+            icon_factory=Plugin.makeIcon,
+            input_action_text=project.displayName,
             actions=actions,
         )
 
