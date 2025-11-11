@@ -7,7 +7,7 @@ from pathlib import Path
 from dataclasses import dataclass
 from albert import *
 
-md_iid = "4.0"
+md_iid = "5.0"
 md_version = "1.10.1"
 md_name = "VSCode projects"
 md_description = "Open VSCode projects"
@@ -40,7 +40,7 @@ class CachedConfig:
     mTime: float
 
 
-class Plugin(PluginInstance, TriggerQueryHandler):
+class Plugin(PluginInstance, GeneratorQueryHandler):
     # Possible locations for Code configuration
     _configStoragePaths = [
         os.path.join(os.environ["HOME"], ".config/Code/storage.json"),
@@ -108,7 +108,7 @@ class Plugin(PluginInstance, TriggerQueryHandler):
             warning(
                 "Project Manager search was enabled, but configuration file was not found")
             notif = Notification(
-                title=self.name,
+                title=self.name(),
                 text=f"Configuration file was not found for the Project Manager extension. Please make sure the extension is installed."
             )
             notif.send()
@@ -170,10 +170,8 @@ class Plugin(PluginInstance, TriggerQueryHandler):
         return "project name or path"
 
     def __init__(self):
-
         PluginInstance.__init__(self)
-
-        TriggerQueryHandler.__init__(self)
+        GeneratorQueryHandler.__init__(self)
 
         configFound = False
 
@@ -305,14 +303,11 @@ Usecase with single VSCode instance - To reuse the VSCode window instead of open
         if terminalCommand is not None:
             self._terminalCommand = terminalCommand
 
-    def handleTriggerQuery(self, query):
-        if not query.isValid:
+    def items(self, ctx):
+        if not ctx.query:
             return
 
-        if query.string == "":
-            return
-
-        matcher = Matcher(query.string)
+        matcher = Matcher(ctx.query)
 
         results: dict[str, SearchResult] = {}
 
@@ -327,12 +322,12 @@ Usecase with single VSCode instance - To reuse the VSCode window instead of open
 
         items: list[StandardItem] = []
         for i in sortedItems:
-            items.append(self._createItem(i.project, query))
+            items.append(self._createItem(i.project))
 
-        query.add(items)
+        yield items
 
     # Creates an item for the query based on the project and plugin settings
-    def _createItem(self, project: Project, query: Query) -> StandardItem:
+    def _createItem(self, project: Project) -> StandardItem:
         actions: list[Action] = []
 
         if self.terminalCommand != "":
