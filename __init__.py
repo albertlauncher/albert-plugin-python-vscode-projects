@@ -76,7 +76,7 @@ class Plugin(PluginInstance, GeneratorQueryHandler):
 
     @staticmethod
     def makeIcon():
-        return makeImageIcon(Path(__file__).parent / "icon.svg")
+        return Icon.image(Path(__file__).parent / "icon.svg")
 
     # Setting indicating whether results from the Recent list in VSCode should be searched
     @property
