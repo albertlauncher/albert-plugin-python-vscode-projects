@@ -246,6 +246,7 @@ PM extension: https://marketplace.visualstudio.com/items?itemName=alefragnani.pr
 The way VSCode is opened can be overridden through terminal command.
 This only works for projects, or recent directories, not workspaces or recent files.
 Terminal will enter the working directory of the project upon selection, execute the command and then close itself.
+Note: The command is wrapped with single quotes, you may need to escape these if used.
 
 Usecase with direnv - To load direnv environment before opening VSCode, enter the following custom command: direnv exec . code .
 
@@ -324,8 +325,7 @@ Usecase with single VSCode instance - To reuse the VSCode window instead of open
                 Action(
                     id="open-terminal",
                     text=f"Run terminal command in project's workdir: {self.terminalCommand}",
-                    callable=lambda: runTerminal(
-                        f"cd {project.path} && {self.terminalCommand}")
+                    callable=lambda: runTerminal(f"'cd \"{project.path}\" && {self.terminalCommand}'")
                 )
             )
 
