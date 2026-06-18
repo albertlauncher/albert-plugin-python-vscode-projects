@@ -10,7 +10,7 @@ import sqlite3
 import threading
 from urllib.parse import urlparse, unquote
 
-md_iid = "5.0"
+md_iid = "6.0"
 md_version = "1.11.0"
 md_name = "VSCode projects"
 md_description = "Open VSCode projects"
