@@ -325,7 +325,7 @@ Usecase with single VSCode instance - To reuse the VSCode window instead of open
                 Action(
                     id="open-terminal",
                     text=f"Run terminal command in project's workdir: {self.terminalCommand}",
-                    callable=lambda: runTerminal(f"'cd \"{project.path}\" && {self.terminalCommand}'")
+                    callable=lambda: runTerminal(f"cd '{project.path}' && {self.terminalCommand}")
                 )
             )
 
