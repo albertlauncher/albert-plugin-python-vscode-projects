@@ -47,10 +47,18 @@ class CachedConfig:
 
 class Plugin(PluginInstance, GeneratorQueryHandler):
     # Location of the database with recent entries
-    _stateDBPath = os.path.join(
+    # VSCode 1.118+ moved this to a shared storage location
+    _sharedStateDBPath = os.path.join(
+        os.environ["HOME"],
+        ".vscode-shared/sharedStorage/state.vscdb"
+    )
+
+    _legacyStateDBPath = os.path.join(
         os.environ["HOME"],
         ".config/Code/User/globalStorage/state.vscdb"
     )
+
+    _stateDBPath = _sharedStateDBPath if os.path.exists(_sharedStateDBPath) else _legacyStateDBPath
 
     # Location of the project manager configuration file
     _projectsPath = os.path.join(
